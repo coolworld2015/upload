@@ -1,14 +1,113 @@
-<html>
+<html ng-app="app">
 <head>
 <title>NodeJS file uploading.</title>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
 </head>
 <body>
-	<form 
-		method="post" 
-		enctype="multipart/form-data" 
-		action="/upload">
-		<input type="file" name="file">
-		<input type="submit" value="Submit">
-	</form>
+<center>
+	<div ng-controller="myCtrl as vm">
+		{{vm.name}}
+		<hr>
+		{{vm.items}}
+		<hr>
+		<table border=1 style="width:100%">
+            <tr ng-repeat="item in vm.items track by $index">
+                <td>
+                    <a href="#">
+                        <img ng-src="{{vm.server}}/uploads/{{item.name}}" width=100 height=100>
+                    </a>
+                    <a style="color: blue; font-size:20px" href="#">
+                        {{item.name}}
+                    </a>
+                </td>
+            </tr>
+		</table>
+		<hr>
+		<form id="myform"
+			method="post" 
+			enctype="multipart/form-data" 
+			action="/upload">
+			<input type="file" name="file">
+			<a href="javascript: submitform()">Submit</a>
+		</form>
+	</div>
+</center>	
 <body>
 </html>
+<script>
+	function submitform() {
+		document.forms["myform"].submit();
+	}
+(function () {
+	'use strict';
+
+ 
+	angular.module('app', []);
+
+	angular.module('app')
+			.run(myConfig);
+
+	function myConfig($rootScope) {
+		$rootScope.myConfig = {
+			heroku: 'http://coolworld.herokuapp.com/',
+			local: 'http://localhost:3000/'
+		}
+	}
+
+	angular.module('app')
+			.controller('myCtrl', myCtrl);
+	
+	function myCtrl($http, $rootScope, $filter) {
+		var vm = this;
+		angular.extend(vm, {
+			init: init,
+			_makeItemsArray: makeItemsArray,
+			getFileList: getFileList
+		});
+		
+		init();
+		
+		function init() {
+			vm.name = 'CoolWorld';
+			vm.server = $rootScope.myConfig.local;
+			vm.item = [
+				{name: "item_1"},
+				{name: "item_2"},
+				{name: "item_3"}
+			]
+			getFileList();
+		}
+		
+		function makeItemsArray(items) {
+			var arr = [];
+			var obj = {};
+			items.forEach(function(el) {
+				obj = JSON.parse(JSON.stringify(obj));
+				obj.name = el;
+				arr.push(obj);
+			})
+			return arr;
+		}
+		
+		function getFileList() {
+			vm.loading = true;
+			vm.error = false;
+			var url = vm.server + 'api/list';
+
+			$http.get(url)
+					.then(function (data) {
+						vm.loading = false;
+						vm.items = makeItemsArray(data.data);
+						vm.name = 'Files - ' + data.data.length;
+					})
+					.catch(function (data) {
+						vm.loading = false;
+						vm.error = true;
+						vm.name = 'Error';
+						console.log('catch - ' + data.status);
+						console.log(data);
+					});
+		}
+	}
+})();
+</script>

@@ -8,3 +8,5 @@ build
 reports
 
 .env
+
+/uploads
