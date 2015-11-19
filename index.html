@@ -82,7 +82,7 @@
 			var arr = [];
 			var obj = {};
 			items.forEach(function(el) {
-				obj = JSON.parse(JSON.stringify(obj));
+				obj = angular.copy(obj);
 				obj.name = el.split('.')[0];
 				obj.pic = el;
 				arr.push(obj);
