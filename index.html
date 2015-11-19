@@ -14,7 +14,7 @@
             <tr ng-repeat="item in vm.items track by $index">
                 <td>
                     <a href="#">
-                        <img ng-src="{{vm.server}}/uploads/{{item.name}}" width=100 height=100>
+                        <img ng-src="{{vm.server}}/uploads/{{item.pic}}" width=100 height=100>
                     </a>
                     <a style="color: blue; font-size:20px" href="#">
                         {{item.name}}
@@ -83,7 +83,8 @@
 			var obj = {};
 			items.forEach(function(el) {
 				obj = JSON.parse(JSON.stringify(obj));
-				obj.name = el;
+				obj.name = el.split('.')[0];
+				obj.pic = el;
 				arr.push(obj);
 			})
 			return arr;
