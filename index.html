@@ -8,8 +8,6 @@
 	<div ng-controller="myCtrl as vm">
 		{{vm.name}}
 		<hr>
-		{{vm.items}}
-		<hr>
 		<table border=1 style="width:100%">
             <tr ng-repeat="item in vm.items track by $index">
                 <td>
