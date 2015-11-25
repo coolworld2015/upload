@@ -1,7 +1,7 @@
 # Upload files
-git clone https://github.com/wintermute2015/upload.git
+git clone https://github.com/coolworld2015/upload.git
 -------------------------------------------------------------------------------------------------
-git config user.name "wintermute2015"
+git config user.name "coolworld2015"
 -------------------------------------------------------------------------------------------------
 git config user.email "wintermute2015@ukr.net"
 -------------------------------------------------------------------------------------------------
